@@ -17,6 +17,10 @@ double Modulo(double num);
 double func(double x);
 int funcNum = 0;
 double resultadoFinal = 0.0;
+//Pontos principais do intervalo e erro
+double pontoInicio, pontoFim, erro;
+//quantidade de subintervalos que divido a função
+int partes=3;
 
 // Calcula a área de um retângulo
 double calculaArea(double pontoA, double pontoB){
@@ -80,12 +84,14 @@ double Modulo(double num){
 //Função ExecutaTarefa => separa a tarefa entre as threads
 double ExecutaTarefa(void *threadid){
 	int i, tid = *(int*) threadid;
-	
+	//threads recebem o intervalo dividido em N partes
+    //threads calculam integrais das partes (dividem as partes entre si)
+    //caso nao seja suficiente, numero de partes aumenta, e threads repetem as ações até respeitar o erro máximo
 }
 
 //Função principal
 int main(){
-    double pontoA, pontoB, erro;
+    double tempo_gasto = 0.0;
     printf("Digite a funcao desejada a ser integrada:\n(0) f(x) = 1 + x,\n(1) f(x) = sqrt(1 - pow(x, 2)), -1 < x < 1,\n(2) f(x) = sqrt(1 + pow(x, 4)),\n(3) f(x) = sin(pow(x, 2)),\n(4) f(x) = cos(pow(e, -x)),\n(5) f(x) = cos(pow(e, -x)) * x,\n(6) f(x) = cos(pow(e, -x)) * (0.005 * pow(x, 3) + 1).\n");
     scanf("%d", &funcNum);
     if(funcNum < 0 || funcNum > 6){
@@ -93,18 +99,15 @@ int main(){
         return 0;
     }
     printf("Digite o limite de integração inicial:\n");
-    scanf("%lf", &pontoA);
+    scanf("%lf", &pontoInicio);
     printf("Digite o limite de integração final:\n");
-    scanf("%lf", &pontoB);
+    scanf("%lf", &pontoFim);
     printf("Digite o erro máximo aceitável:\n");
     scanf("%lf", &erro);
     // Pega o horário no momento
     clock_t begin = clock();
     pthread_t tid[NTHREADS];
 	int t, id[NTHREADS];
-	//--inicilaiza o mutex (lock de exclusao mutua)
-	pthread_mutex_init(&mutex, NULL);
-
 	for(t=0; t<NTHREADS; t++) {
 		id[t]=t;
 		if (pthread_create(&tid[t], NULL, ExecutaTarefa, (void *) &id[t])) {
